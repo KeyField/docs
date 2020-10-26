@@ -6,30 +6,28 @@ In order for User A to connect with user B, we need the following pieces of info
 
 # User Identities
 
-KeyField users are composed of a few pieces of data:
+KeyField users are composed of a few pieces of required data:
 
- - Display username / name
+ - Username: string of printable word characters
  - User main keypair
-   - Private key is shared between all of user's devices
-   - Public key is regularly sent to homeserver for distribution
-   - Changes on every modification to the user's device list or homeserver, devices keep all previous user main keys for decryption
- - User's devices
+   - Private signingkey is shared between all of user's devices
+   - Public verifykey is regularly sent to homeserver for distribution
+   - Changes on every modification to the user's device list or homeserver
+ - Chain of all previous main keypairs
+ - List of user's devices
    - Each device has a static keypair created at init
-   - Private and public friendly device name (public cannot be changed without re-generating device keypair)
+   - Public friendly device name (public name cannot be changed without re-generating device keypair, which should be easy)
  - User's current homeserver address and homeserver's public key
    - This is what allows the network to deliver content to the user
 
 # User Profile
 
-On the users current homeserver the following information must be kept up to date:
-
- - User display information: username, name, etc (signed by user main key)
- - User main public key
- - List of user device public keys + public names (signed by user main key)
- - Verification that this server is currently authoritative for the user (signed by latest user main key)
+On the user's current homeserver all of the identity information should be available with a valid signature from the User, and if that User is authorized as a homeserver member then it will be signed by that homeserver as well.
 
 # Homeserver Identities
 
-In order to establish inter-homeserver trust correctly each homeserver will have it's own rotating keypair.
+In order to establish inter-homeserver trust correctly each homeserver will have it's own partial profile.
 
-This keypair is used not only to secure communications between users and homeservers but also to allow homeservers to verify the network relationships of other homeservers.
+The homeserver's profile contains much of the same information as a User profile apart from the list of devices. The homeserver maintains a Username (like `system`) and it's own set of keys so that it can send messages and be verified / trusted by clients just like a User.
+
+The homeserver keypair is used not only to secure communications between users and homeservers but also to allow homeservers to verify the network relationships of other homeservers.
