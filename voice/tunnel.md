@@ -33,6 +33,8 @@ When a voice tunnel is declared to the server it needs to know who can write, wh
 
 On tunnel construction by User A, User A encrypts the voice shared symmetric key with the shared ChatChannel asymmetric key, and then sends a InitializeVoice message with that voice encryption key to the chat channel. A hash of the symmetric voice data key is sent to the server to identify the tunnel: the tunnel ID.
 
+> Note for clients: recommended default behaviour is to send notifications on InitializeVoice in DMs, and do not send notifications for groups
+
 Now User B sees (or gets a notification, depending on channel type) that User A started a voice tunnel, and User B wishes to join.
 
 User B can either ask his homeserver to relay voice data for that tunnel, or can connect to the existing tunnel on homeserver A.
