@@ -50,3 +50,13 @@ Let's say User B does not want ISP C to know that they are communicating with pe
 User B can ask homeserver B to connect as a proxy to homeserver A's tunnel.
 
 Homeserver B now asks homeserver A to forward voice data from the tunnel to itself, which is proven by a signature from User B asking for a proxy connection which includes the tunnel ID and name of homeserver B for the proxy destination.
+
+# VoiceTunnel server implementation
+
+Obviously running encrypted voice packet data over HTTP methods is dumb, so the VoiceTunnel relay runs separately. I'll call it vtserver A for the tunnel server on homeserver A.
+
+Once homeserver A accepts the creation of a voice tunnel, it will convey the details of the tunnel to vtserver A. Most likely this can be done by having them both share the database connection, since vtserver will need the server's private keypair as well for transport of data between client <-> server.
+
+All vtserver now has to do is wait for a connection to be opened by User A, in which vtserver A gets the tunnel ID and sees that User A is authorized, so the connection opens and voice data is relayed.
+
+For vtserver B, User B wishes for it to relay voice to vtserver A, so vtserver passes a proof-of-relay request to vtserver A, and given that it's a correct tunnel ID and good signature from User B and homeserver B, will now copy voice data to the new connection on vtserver B, which then forwards again to User B.
