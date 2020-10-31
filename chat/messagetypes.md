@@ -1,5 +1,5 @@
 
-# Message Types
+# Chat Message Types (`io.keyfield.chat.*`)
 
 Clearly modern chat channels don't just send strings of text, so we need support for media! (And some other message types)
 
